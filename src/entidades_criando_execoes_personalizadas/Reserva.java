@@ -19,7 +19,10 @@ public class Reserva {
     private Date checkIn;
     private Date checkOut;
 
-    public static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    public static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    
+    public Reserva() {
+    }
     
     public Reserva(Integer numeroQuarto, Date chekIn, Date chekOut) {
         this.numeroQuarto = numeroQuarto;
@@ -50,9 +53,22 @@ public class Reserva {
         return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }
     
-    public void atualizarDatas(Date chekIn, Date chekOut) {
+    public String atualizarDatas(Date chekIn, Date chekOut) {
+        
+        Date dataAgora = new Date();
+            
+            if (checkIn.before(dataAgora) || checkOut.before(dataAgora)) {          
+                return "Erro na reserva: datas para atualização reserva tem que ser datas futuras";
+            }
+            
+            if (!checkOut.after(checkIn)) {
+                return "Erro na reserva: A data do check-out deve ser depois da data de check-in";
+            }
+        
         this.checkIn = chekIn;
         this.checkOut = chekOut;
+        
+        return null;
     }
 
     @Override
