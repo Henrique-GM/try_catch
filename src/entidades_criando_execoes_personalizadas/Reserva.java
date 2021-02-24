@@ -8,6 +8,7 @@ package entidades_criando_execoes_personalizadas;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+import modelo_exception.DominioException;
 
 /**
  *
@@ -21,13 +22,13 @@ public class Reserva {
 
     public static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     
-    public Reserva() {
-    }
-    
     public Reserva(Integer numeroQuarto, Date chekIn, Date chekOut) {
         this.numeroQuarto = numeroQuarto;
         this.checkIn = chekIn;
         this.checkOut = chekOut;
+        if (!checkOut.after(checkIn)) {
+            throw new DominioException("Erro na reserva: A data do check-out deve ser depois da data de check-in");
+        }
     }
 
     public Integer getNumeroQuarto() {
@@ -53,22 +54,20 @@ public class Reserva {
         return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }
     
-    public String atualizarDatas(Date chekIn, Date chekOut) {
+    public void atualizarDatas(Date chekIn, Date chekOut) {
         
         Date dataAgora = new Date();
             
-            if (checkIn.before(dataAgora) || checkOut.before(dataAgora)) {          
-                return "Erro na reserva: datas para atualização reserva tem que ser datas futuras";
-            }
+        if (checkIn.before(dataAgora) || checkOut.before(dataAgora)) {          
+            throw new DominioException("Erro na reserva: datas para atualização reserva tem que ser datas futuras") ;
+        }
             
-            if (!checkOut.after(checkIn)) {
-                return "Erro na reserva: A data do check-out deve ser depois da data de check-in";
-            }
+        if (!checkOut.after(checkIn)) {
+            throw new DominioException("Erro na reserva: A data do check-out deve ser depois da data de check-in");
+        }
         
         this.checkIn = chekIn;
         this.checkOut = chekOut;
-        
-        return null;
     }
 
     @Override
