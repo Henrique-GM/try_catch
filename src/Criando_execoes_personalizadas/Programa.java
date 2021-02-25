@@ -64,9 +64,7 @@ public class Programa {
         
         catch (RuntimeException e) {
             System.out.println("Erro inesperado");
-        }
-        
-        
+        }   
         
         sc.close();
     }
