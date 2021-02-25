@@ -51,6 +51,10 @@ public class Exercicio {
             e.printStackTrace();
         }   
          
+        catch(RuntimeException e) {
+            System.out.println("Erro inesperado");
+            e.printStackTrace();
+        }
         sc.close();
     }
 }
